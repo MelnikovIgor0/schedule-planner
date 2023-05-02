@@ -1,0 +1,12 @@
+version: "1"
+services:
+    schedule-planner:
+        image: postgres
+        restart: always
+        container_name: schedule-planner
+        environment:
+            POSTGRES_USER: "postgres"
+            POSTGRES_DB: "schedule-planner"
+            POSTGRES_PASSWORD: "123456"
+        ports:
+            - 15432:5432

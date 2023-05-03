@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{90F4CFB3-DF8A-4048-87BC-DBB4D3FE32FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationSchedulePlannerMVC", "WebApplicationSchedulePlannerMVC\WebApplicationSchedulePlannerMVC.csproj", "{0EEC23B1-9909-49D4-AA75-CCD32B544C10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{90F4CFB3-DF8A-4048-87BC-DBB4D3FE32FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F4CFB3-DF8A-4048-87BC-DBB4D3FE32FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F4CFB3-DF8A-4048-87BC-DBB4D3FE32FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EEC23B1-9909-49D4-AA75-CCD32B544C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EEC23B1-9909-49D4-AA75-CCD32B544C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EEC23B1-9909-49D4-AA75-CCD32B544C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EEC23B1-9909-49D4-AA75-CCD32B544C10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

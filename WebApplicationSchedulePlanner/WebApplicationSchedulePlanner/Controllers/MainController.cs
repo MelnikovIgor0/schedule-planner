@@ -32,9 +32,12 @@ public class MainController : Controller
     }
 
     [HttpPost("create-schedule")]
-    public async Task<IActionResult> CreateSchedule(IFormFile inputData, 
-        [FromHeader] List<int> lessonPriorety, CancellationToken ct)
+    public async Task<IActionResult> CreateSchedule(IFormFile inputData, CancellationToken ct)
     {
+        if (inputData.Length > 20480)
+        {
+            return BadRequest("Загруженный файл слишком большой");
+        }
         if (inputData.Length > 0)
         {
             var filePath = Path.GetTempFileName();
@@ -45,18 +48,21 @@ public class MainController : Controller
             string[] input = System.IO.File.ReadAllLines(filePath);
 
             InputData data;
-            // try
-            // {
+            try
+            {
                 data = _csvParser.ParseDataFromCsv(input);
-            // } catch (ArgumentException exception)
-            // {
-            //     return BadRequest(exception.Message);
-            // }
-            List<ScheduleElement> schedule = _planner.GenerateSchedule(data,
-                new List<int>(lessonPriorety));
+            } catch (ArgumentException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            List<ScheduleElement> schedule = _planner.GenerateSchedule(data);
             string generatedSchedule = _csvWriter.WriteCsv(schedule);
             string newId = Guid.NewGuid().ToString();
-            await _scheduleRepository.CreateSchedule(String.Join('\n', input),
+            while ((await _scheduleRepository.GetScheduleById(newId, ct)) is not null)
+            {
+                newId = Guid.NewGuid().ToString();
+            }
+            await _scheduleRepository.CreateSchedule(string.Join('\n', input),
                 newId, generatedSchedule, ct);
             System.IO.File.WriteAllText("buffer_file.csv", generatedSchedule, System.Text.Encoding.UTF8);
             Stream streamAns = System.IO.File.OpenRead("buffer_file.csv");
@@ -64,7 +70,7 @@ public class MainController : Controller
             { FileDownloadName = "schedule_" + newId + ".csv" };
             return result;
         }
-        return BadRequest("empty input file!");
+        return BadRequest("Загружен пустой файл");
     }
 
     [HttpGet("schedule/{id}")]
@@ -73,7 +79,7 @@ public class MainController : Controller
         ScheduleEntity? schedule = await _scheduleRepository.GetScheduleById(id, ct);
         if (schedule is null)
         {
-            return StatusCode(404, "Schedule with specified id does not exist");
+            return StatusCode(404, "Расписание с данным идентификатором не найдено");
         }
         System.IO.File.WriteAllText("buffer_file.csv", schedule?.OutputContent, System.Text.Encoding.UTF8);
         Stream streamAns = System.IO.File.OpenRead("buffer_file.csv");

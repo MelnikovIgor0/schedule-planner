@@ -8,6 +8,5 @@ namespace BLL.Models;
 
 public interface ISchedulePlanner
 {
-    List<ScheduleElement> GenerateSchedule(InputData data,
-        List<int> lessonPriorety);
+    List<ScheduleElement> GenerateSchedule(InputData data);
 }

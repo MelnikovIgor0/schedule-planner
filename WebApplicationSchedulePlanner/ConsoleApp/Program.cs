@@ -49,6 +49,6 @@ foreach (Auditorium auditorium in data.Auditorias)
 
 ISchedulePlanner planner = new SchedulePlanner();
 
-foreach (ScheduleElement element in planner.GenerateSchedule(data, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8})) {
+foreach (ScheduleElement element in planner.GenerateSchedule(data)) {
     Console.WriteLine(element.Day + " " + element.Lesson + " " + element.LessonName + " " + element.AuditoriumName);
 }

@@ -9,10 +9,8 @@ public sealed class SchedulePlanner : ISchedulePlanner
     /// which satisfy input data and sort them in specified order.
     /// </summary>
     /// <param name="data">Input data.</param>
-    /// <param name="lessonPriorety">List of prioreties of lessons.</param>
     /// <returns>List of sorted combinations and precounted number of students visiting each subject.</returns>
-    private List<(int day, int lesson, Subject subject, int numberStudents)> GetAllSlots(InputData data,
-        List<int> lessonPriorety)
+    private List<(int day, int lesson, Subject subject, int numberStudents)> GetAllSlots(InputData data)
     {
         List<(int day, int lesson, Subject subject, int numberStudents)> slots = new();
         Dictionary<int, int> numberStudents = new();
@@ -43,13 +41,13 @@ public sealed class SchedulePlanner : ISchedulePlanner
         }
 
         List<int> order = new();
-        for (int i = 0; i < lessonPriorety.Count() + 1; ++i)
+        for (int i = 0; i < data.LessonPriorety.Count() + 1; ++i)
         {
             order.Add(0);
         }
-        for (int i = 0; i < lessonPriorety.Count(); ++i)
+        for (int i = 0; i < data.LessonPriorety.Count(); ++i)
         {
-            order[lessonPriorety[i]] = i;
+            order[data.LessonPriorety[i]] = i;
         }
         slots.Sort((a, b) =>
         {
@@ -131,14 +129,12 @@ public sealed class SchedulePlanner : ISchedulePlanner
     /// Method generated schedule by input data and priorety of lessons.
     /// </summary>
     /// <param name="data">Input data.</param>
-    /// <param name="lessonPriorety">List of priorety of lessons.</param>
     /// <returns>Timetable as list of elements.</returns>
-    public List<ScheduleElement> GenerateSchedule(InputData data,
-        List<int> lessonPriorety)
+    public List<ScheduleElement> GenerateSchedule(InputData data)
     {
         // Init all needed containers.
         List<(int day, int lesson, Subject subject, int numberStudents)> slots = 
-            GetAllSlots(data, lessonPriorety);
+            GetAllSlots(data);
         List<(int day, int lesson, Subject subject, int numberStudents)> skipped = new();
         List<Auditorium>[,] auditoriums = GenerateAuditoriumsSlots(data);
         List<ScheduleElement> answer = new();
@@ -146,7 +142,15 @@ public sealed class SchedulePlanner : ISchedulePlanner
         HashSet<(int day, int lesson, int subjectId)> restrictions = new();
         List<HashSet<int>> lessonsForStudent = GenerateLessonsForStudent(data);
         int numberPlaced = 0;
-
+        List<int> order = new();
+        for (int i = 0; i < data.LessonPriorety.Count() + 1; ++i)
+        {
+            order.Add(0);
+        }
+        for (int i = 0; i < data.LessonPriorety.Count(); ++i)
+        {
+            order[data.LessonPriorety[i]] = i;
+        }
         // Iterating by all possible slots and trying to place subject as soon as possible.
         foreach (var element in slots)
         {
@@ -224,6 +228,16 @@ public sealed class SchedulePlanner : ISchedulePlanner
                 }
                 return a.day.CompareTo(b.day);
             });
+
+            subject.Slots.Sort((a, b) =>
+            {
+                if (auditoriums[a.day, a.lesson].Count() == auditoriums[b.day, b.lesson].Count())
+                {
+                    return -(order[a.lesson].CompareTo(order[b.lesson]));
+                }
+                return -(auditoriums[a.day, a.lesson].Count().CompareTo(auditoriums[b.day, b.lesson].Count()));
+            });
+
             foreach (var slot in subject.Slots)
             {
                 if (auditoriums[slot.day, slot.lesson].Count() > 0 && 

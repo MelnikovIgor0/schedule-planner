@@ -12,4 +12,5 @@ public class InputData
     public List<Student> Students;
     public List<Auditorium> Auditorias;
     public List<Subject> Subjects;
+    public List<int> LessonPriorety;
 }

@@ -1,0 +1,10 @@
+﻿@model WebApplicationSchedulePlannerMVC.Requests.CreateScheduleRequest
+
+@{
+    ViewBag.Title = "создать расписание";
+}
+
+<form asp-action="CreateSchedulePost" enctype="multipart/form-data" method="post">
+    <input asp-for="InputData" type="file" required /><br />
+    <input class="btn" type="submit" value="Upload" />
+</form>

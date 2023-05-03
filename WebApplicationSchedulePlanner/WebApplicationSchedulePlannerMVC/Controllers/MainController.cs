@@ -27,13 +27,14 @@ public class MainController : Controller
     }
 
     [HttpGet("index")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        return Redirect("create-schedule");
     }
 
     [HttpPost("create-schedule")]
-    public async Task<IActionResult> CreateSchedule(CreateScheduleRequest request, CancellationToken ct)
+    public async Task<IActionResult> CreateSchedulePost(CreateScheduleRequest request,
+        CancellationToken ct)
     {
         if (request.InputData.Length > 20480)
         {
@@ -66,13 +67,17 @@ public class MainController : Controller
             }
             await _scheduleRepository.CreateSchedule(string.Join('\n', input),
                 newId, generatedSchedule, ct);
-            System.IO.File.WriteAllText("buffer_file.csv", generatedSchedule, System.Text.Encoding.UTF8);
-            Stream streamAns = System.IO.File.OpenRead("buffer_file.csv");
-            var result = new FileStreamResult(streamAns, "application/octet-stream")
-            { FileDownloadName = "schedule_" + newId + ".csv" };
-            return result;
+            return Redirect($"schedule/{newId}");
+            // return result;
         }
         return BadRequest("Загружен пустой файл");
+    }
+
+    [HttpGet("create-schedule")]
+    public async Task<IActionResult> CreateSchedule(CreateScheduleRequest request,
+        CancellationToken ct)
+    {
+        return View();
     }
 
     [HttpGet("schedule/{id}")]

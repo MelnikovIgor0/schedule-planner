@@ -1,10 +1,37 @@
 ﻿@model WebApplicationSchedulePlannerMVC.Requests.CreateScheduleRequest
 
 @{
-    ViewBag.Title = "создать расписание";
+    ViewData["Title"] = "создать расписание";
 }
+<!--
+<style>
+    div.input__wrapper {
+        width: 100%;
+        position: relative;
+        margin: 15px 0;
+        text-align: center;
+    }
 
-<form asp-action="CreateSchedulePost" enctype="multipart/form-data" method="post">
-    <input asp-for="InputData" type="file" required /><br />
-    <input class="btn" type="submit" value="Upload" />
+    input.input__file {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+    }
+</style>
+-->
+
+<link rel="stylesheet" href="~/css/bootstrap.css" />
+<title>Создать расписание</title>
+
+<form asp-action="CreateSchedulePost"enctype="multipart/form-data"
+method="post" class="form-inline" align="center" style="padding: 50px;
+  background: #eee;
+  position: fixed; top: 25%; left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);">
+    <div>
+        <input asp-for="InputData" type="file" required/><br /><br />
+        <input type="submit" value="создать расписание" class="btn btn-primary" style="width:100%" />
+    </div>
 </form>

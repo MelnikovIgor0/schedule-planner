@@ -26,7 +26,7 @@ public class MainController : Controller
         _planner = new SchedulePlanner();
     }
 
-    [HttpGet("index")]
+    [HttpGet("")]
     public async Task<IActionResult> Index()
     {
         return Redirect("create-schedule");

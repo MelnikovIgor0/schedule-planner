@@ -5,7 +5,6 @@
 }
 
 <link rel="stylesheet" href="~/css/bootstrap.css" />
-<title>Создать расписание</title>
 
 <form asp-action="CreateSchedulePost"enctype="multipart/form-data"
 method="post" class="form-inline" align="center" style="padding: 50px;
@@ -19,3 +18,18 @@ method="post" class="form-inline" align="center" style="padding: 50px;
         <input type="submit" value="создать расписание" class="btn btn-primary" style="width:100%" />
     </div>
 </form>
+
+<div style="position: fixed; top: 42%; left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);">
+    <a href="@ViewData["Watch"]" align="center">
+        <button class="btn btn-primary">посмотреть расписание</button>
+    </a> 
+    
+    <br />
+    
+    <a href="@ViewData["Download"]" align="center">
+        <button class="btn btn-primary">скачать расписание</button>
+    </a>
+</div>

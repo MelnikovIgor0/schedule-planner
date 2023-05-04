@@ -1,0 +1,58 @@
+﻿@model BLL.Models.ScheduleElement
+
+@{
+    ViewData["Title"] = "просмотр расписания";
+}
+
+<link rel="stylesheet" href="~/css/bootstrap.css" />
+
+<div align="center">
+    <a href="@ViewData["Download"]" align="center">
+        <button class="btn btn-primary">скачать расписание</button>
+    </a>
+</div>
+
+<br />
+
+<table class="table table-striped">
+    <tr>
+        <th>день недели</th>
+        <th>номер пары</th>
+        <th>название предмета</th>
+        <th>аудитория</th>
+    </tr>
+    @foreach (BLL.Models.ScheduleElement element in ViewData["Schedule"] as List<BLL.Models.ScheduleElement>)
+    {
+        <tr>
+            @{
+                switch (element.Day)
+                {
+                    case 0:
+                        <th>пн</th>
+                        break;
+                    case 1:
+                        <th>вт</th>
+                        break;
+                    case 2:
+                        <th>ср</th>
+                        break;
+                    case 3:
+                        <th>чт</th>
+                        break;
+                    case 4:
+                        <th>пт</th>
+                        break;
+                    case 5:
+                        <th>сб</th>
+                        break;
+                    default:
+                        <th>вс</th>
+                        break;
+                }
+            }
+            <th>@element.Lesson</th>
+            <th>@element.LessonName</th>
+            <th>@element.AuditoriumName</th>
+        </tr>
+    }
+</table>

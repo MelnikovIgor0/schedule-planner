@@ -9,8 +9,8 @@ public sealed class InitSchema : Migration
     {
         Create.Table("schedules")
             .WithColumn("uuid").AsString(36).PrimaryKey("schedules_pk").NotNullable()
-            .WithColumn("input_content").AsString(20480).NotNullable()
-            .WithColumn("output_content").AsString(20480).NotNullable();
+            .WithColumn("input_content").AsString(1048576).NotNullable()
+            .WithColumn("output_content").AsString(1048576).NotNullable();
     }
 
     public override void Down()

@@ -37,7 +37,7 @@ public class MainController : Controller
     public async Task<IActionResult> CreateSchedulePost(CreateScheduleRequest request,
         CancellationToken ct)
     {
-        if (request.InputData.Length > 20480)
+        if (request.InputData.Length > 1000000)
         {
             return BadRequest("Загруженный файл слишком большой");
         }
@@ -126,10 +126,6 @@ public class MainController : Controller
             }
             string[] data = line.Split(';', 
                 StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in data)
-            {
-                Console.WriteLine($"|{s}|");
-            }
             elements.Add(new ScheduleElement
             {
                 Id = ++counter,

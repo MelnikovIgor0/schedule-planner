@@ -16,20 +16,30 @@ public sealed class SchedulePlanner : ISchedulePlanner
         Dictionary<int, int> numberStudents = new();
         foreach (Student student in data.Students)
         {
+            HashSet<int> subjectsIds = new HashSet<int>();
             foreach (Group group in student.Groups)
             {
                 foreach (Subject subject in group.Subjects)
                 {
-                    if (numberStudents.ContainsKey(subject.Id))
-                    {
-                        numberStudents[subject.Id]++;
-                    }
-                    else
-                    {
-                        numberStudents[subject.Id] = 1;
-                    }
+                    subjectsIds.Add(subject.Id);
                 }
             }
+            foreach (int subjectId in subjectsIds)
+            {
+                if (numberStudents.ContainsKey(subjectId))
+                {
+                    numberStudents[subjectId]++;
+                }
+                else
+                {
+                    numberStudents[subjectId] = 1;
+                }
+            }
+        }
+
+        foreach (KeyValuePair<int, int> pair in numberStudents)
+        {
+            Console.WriteLine(pair.Key + ": " + pair.Value);
         }
 
         foreach (Subject subject in data.Subjects)
@@ -57,7 +67,7 @@ public sealed class SchedulePlanner : ISchedulePlanner
                 {
                     return -(a.numberStudents.CompareTo(b.numberStudents));
                 }
-                return -(order[a.lesson].CompareTo(order[b.lesson]));
+                return (order[a.lesson].CompareTo(order[b.lesson]));
             }
             return a.day.CompareTo(b.day);
         });
@@ -233,7 +243,7 @@ public sealed class SchedulePlanner : ISchedulePlanner
             {
                 if (auditoriums[a.day, a.lesson].Count() == auditoriums[b.day, b.lesson].Count())
                 {
-                    return -(order[a.lesson].CompareTo(order[b.lesson]));
+                    return (order[a.lesson].CompareTo(order[b.lesson]));
                 }
                 return -(auditoriums[a.day, a.lesson].Count().CompareTo(auditoriums[b.day, b.lesson].Count()));
             });
@@ -251,6 +261,8 @@ public sealed class SchedulePlanner : ISchedulePlanner
                         Day = slot.day,
                         LessonName = subject.Name
                     });
+                    auditoriums[slot.day, slot.lesson]
+                        .RemoveAt(auditoriums[slot.day, slot.lesson].Count() - 1);
                     placed = true;
                     break;
                 }
@@ -261,9 +273,23 @@ public sealed class SchedulePlanner : ISchedulePlanner
             }
         }
 
+        int[,] numberLessons = new int[7, 9];
+        foreach (ScheduleElement element in answer)
+        {
+            ++numberLessons[element.Day, element.Lesson];
+        }
+
         // Pushing twice skipped subjects to online :(
         foreach (Subject subject in twiceSkipped)
         {
+            subject.Slots.Sort((a, b) =>
+            {
+                if (numberLessons[a.day, a.lesson] == numberLessons[b.day, b.lesson])
+                {
+                    return (order[a.lesson].CompareTo(order[b.lesson]));
+                }
+                return numberLessons[a.day, a.lesson].CompareTo(numberLessons[b.day, b.lesson]);
+            });
             answer.Add(new ScheduleElement
             {
                 Id = ++numberPlaced,
@@ -272,6 +298,7 @@ public sealed class SchedulePlanner : ISchedulePlanner
                 AuditoriumName = "ONLINE",
                 LessonName = subject.Name
             });
+            ++numberLessons[subject.Slots[0].day, subject.Slots[0].lesson];
         }
 
         // Sorting placed now subjects.

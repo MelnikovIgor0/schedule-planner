@@ -119,7 +119,7 @@ public sealed class CsvParser : ICsvParser
             throw new ArgumentException($"Неправильно указано количество " +
                 $"предметов в группе (строка {lineNumber})");
         }
-        if (numberLessons < 1 || numberLessons > 10)
+        if (numberLessons < 1 || numberLessons > 100)
         {
             throw new ArgumentException($"Неправильно указано количество " +
                 $"предметов в группе (строка {lineNumber})");
@@ -218,7 +218,7 @@ public sealed class CsvParser : ICsvParser
         {
             throw new ArgumentException($"Неправильно указана вместимость аудитории (строка {lineNumber})");
         }
-        if (capacity < 1 || capacity > 300)
+        if (capacity < 1 || capacity > 500)
         {
             throw new ArgumentException($"Неправильно указана вместимость аудитории (строка {lineNumber})");
         }

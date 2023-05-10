@@ -1,14 +1,14 @@
 ﻿@model WebApplicationSchedulePlannerMVC.Requests.CreateScheduleRequest
 
 @{
-    ViewData["Title"] = "создать расписание";
+    ViewData["Title"] = "Создать расписание занятий";
 }
 
 <link rel="stylesheet" href="~/css/bootstrap.css" />
 <style>
   .send-schedule {
     width: 95%;
-    margin-top: 8px;
+    margin-top: 15px;
     margin-bottom: 10px;
   }
 </style>
@@ -18,12 +18,13 @@
 method="post" class="form-inline" align="center" style="padding: 50px;
   border-radius: 25px;
   background: #eee;
-  position: fixed; top: 25%; left: 50%;
+  position: fixed; top: 35%; left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);">
-    <div>
-        <input asp-for="InputData" type="file" required/><br /><br />
-        <input type="submit" value="Создать расписание" class="btn btn-primary send-schedule" />
+    <div style="width: 100%; display: block">
+        <input asp-for="InputData" type="file" id="timetables" hidden required/>
+        <label for="timetables" class="btn btn-outline-primary">Выберите файл</label>
+        <input type="submit" value="Создать расписание" class="btn btn-primary send-schedule"/>
     </div>
 </form>

@@ -72,6 +72,10 @@ public sealed class CsvParser : ICsvParser
                 $" для предмета не соответствует фактическому " +
                 $"количеству слотов (строка {lineNumber})");
         }
+        if (data[0].Length > 255)
+        {
+            throw new ArgumentException($"Слишком длинное название предмета (строка {lineNumber})");
+        }
         Subject result = new Subject()
         {
             Name = data[0],
@@ -119,7 +123,7 @@ public sealed class CsvParser : ICsvParser
             throw new ArgumentException($"Неправильно указано количество " +
                 $"предметов в группе (строка {lineNumber})");
         }
-        if (numberLessons < 1 || numberLessons > 100)
+        if (numberLessons < 1 || numberLessons > 200)
         {
             throw new ArgumentException($"Неправильно указано количество " +
                 $"предметов в группе (строка {lineNumber})");
@@ -129,6 +133,10 @@ public sealed class CsvParser : ICsvParser
             throw new ArgumentException($"Указанное количество предметов в " +
                 $"группе не соответствует фактическому количеству " +
                 $"предметов (строка {lineNumber})");
+        }
+        if (data[0].Length > 255)
+        {
+            throw new ArgumentException($"Слишком длинное название группы (строка {lineNumber})");
         }
         Group group = new Group()
         {
@@ -185,6 +193,11 @@ public sealed class CsvParser : ICsvParser
                 $" не соответствует фактическому количеству" +
                 $" перечисленных групп (строка {lineNumber})");
         }
+        if (data[0].Length > 255)
+        {
+            throw new ArgumentException($"Слишком длинное ФИО или " +
+                $"уникальный идентификатор студента (строка {lineNumber})");
+        }
         Student student = new Student()
         {
             Name = data[0],
@@ -221,6 +234,10 @@ public sealed class CsvParser : ICsvParser
         if (capacity < 1 || capacity > 500)
         {
             throw new ArgumentException($"Неправильно указана вместимость аудитории (строка {lineNumber})");
+        }
+        if (data[0].Length > 255)
+        {
+            throw new ArgumentException($"Слишком длинное название аудитории (строка {lineNumber})");
         }
         return new Auditorium()
         {
@@ -292,7 +309,7 @@ public sealed class CsvParser : ICsvParser
                 throw new ArgumentException("Неправильно указан один из параметров (строка 1)");
             }
         }
-        if (sizes[0] < 1 || sizes[0] > 100)
+        if (sizes[0] < 1 || sizes[0] > 200)
         {
             throw new ArgumentException("Некорректное количество предметов (строка 1)");
         }

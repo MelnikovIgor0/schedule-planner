@@ -1,22 +1,22 @@
 ﻿@model WebApplicationSchedulePlannerMVC.Requests.CreateScheduleRequest
 
 @{
-    ViewData["Title"] = "создать расписание";
+    ViewData["Title"] = "Создать расписание занятий";
 }
 
 <link rel="stylesheet" href="~/css/bootstrap.css" />
 <style>
   .schedule-button {
     margin: 5px;
-    align
   }
   .schedule-block {
     border-radius: 5px;
     margin: 5px;
+    width: 100%;
   }
   .send-schedule {
     width: 95%;
-    margin-top: 8px;
+    margin-top: 15px;
     margin-bottom: 10px;
   }
 </style>
@@ -25,20 +25,21 @@ method="post" class="form-inline" align="center" style="padding: 50px;
   background: #eee;
   border-radius: 25px;
 
-  position: fixed; top: 25%; left: 50%;
+  position: fixed; top: 35%; left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);">
-    <div>
-        <input asp-for="InputData" type="file" required/><br />
-        <input type="submit" value="Создать расписание" class="btn btn-primary send-schedule" />
+    <div style="width: 100%; display: block">
+        <input asp-for="InputData" type="file" id="timetables" hidden required/>
+        <label for="timetables" class="btn btn-outline-primary">Выберите файл</label>
+        <input type="submit" value="Создать расписание" class="btn btn-primary send-schedule"/>
     </div>
-    <div class="schedule-block" align="center">
-        <a role="button" class="btn btn-info schedule-button" href="@ViewData["Download"]" style="width: 35%">
-            Скачать
+    <div class="schedule-block">
+        <a role="button" class="btn btn-info schedule-button" href="@ViewData["Download"]"><!-- style="width: 35%"-->
+            <div style="color: black">Скачать</div>
         </a>
-        <a role="button" class="btn btn-success schedule-button" href="@ViewData["Watch"]" style="width: 55%">
-            Просмотреть
+        <a role="button" class="btn btn-success schedule-button" href="@ViewData["Watch"]"><!-- style="width: 55%"-->
+            <div style="color: white">Просмотреть</div>
         </a>
     </div>
 </form>
